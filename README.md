@@ -24,7 +24,7 @@ One of the initial limitations I encountered was my intention to conduct a time 
 ### Potential Improvements & Future Directions
 - **Expanding the Dataset** – If more complete time-series data becomes available, applying longitudinal analysis could help track shifts in darknet activity over time.
 - **Other Dimensionality Reduction approaches** – Exploring alternatives like t-SNE (t-Distributed Stochastic Neighbor Embedding) or UMAP (Uniform Manifold Approximation and Projection) could better capture complex relationships in the data.
-- Equal Weighting of Privacy Tools & Activities – All privacy tools (VPN, Tor, Non-VPN, Non-Tor) were treated as having equal importance, even though in reality, their usage frequency and purpose may differ significantly.
+- **Equal Weighting of Privacy Tools & Activities** – All privacy tools (VPN, Tor, Non-VPN, Non-Tor) were treated as having equal importance, even though in reality, their usage frequency and purpose may differ significantly.
     - May oversimplify darknet behavior, as some privacy tools may be more closely associated with specific types of activity than others.
 ## Files
 ### **`visual.py`**

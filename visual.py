@@ -39,9 +39,9 @@ edge_highlight_color = "yellow"
 node_attributes = {}
 for node in airline_graph.nodes():
     if node in main_hubs:
-        node_attributes[node] = {'color': '#F7C5CC', 'size': 40}  
+        node_attributes[node] = {'color': '#F7C5CC', 'size': 50}  
     else:
-        node_attributes[node] = {'color': '#538bc2', 'size': 20}  
+        node_attributes[node] = {'color': '#538bc2', 'size': 30}  
 
 nx.set_node_attributes(airline_graph, node_attributes)
 
@@ -51,7 +51,7 @@ plot = figure(
     x_range=Range1d(-12, 12),
     y_range=Range1d(-12, 12),
     title="Darknet Network",
-    background_fill_color="#3c3a4d"
+    background_fill_color="#5e5b75"
 )
 
 network_graph = from_networkx(airline_graph, pos, scale=10, center=(0, 0))
@@ -59,7 +59,7 @@ network_graph.node_renderer.glyph = Circle(size="size", fill_color="color")
 network_graph.node_renderer.selection_glyph = Circle(size="size", fill_color="color")
 network_graph.node_renderer.hover_glyph = Circle(size="size", fill_color="color")
 
-network_graph.edge_renderer.glyph = MultiLine(line_alpha=0.5, line_width=1)
+network_graph.edge_renderer.glyph = MultiLine(line_alpha=0.5, line_width=2)
 network_graph.edge_renderer.selection_glyph = MultiLine(line_color=edge_highlight_color, line_width=2)
 network_graph.edge_renderer.hover_glyph = MultiLine(line_color=edge_highlight_color, line_width=2)
 network_graph.selection_policy = NodesAndLinkedEdges()
@@ -72,7 +72,7 @@ hover_tool = HoverTool(tooltips=[("Node", "@index")])
 plot.add_tools(hover_tool)
 st.bokeh_chart(plot, use_container_width=True)
 ### ----------- PCA Analysis -----------
-st.markdown("<br><br><br><br><br>", unsafe_allow_html=True)  # Add more `<br>` tags
+st.markdown("<br><br><br><br><br>", unsafe_allow_html=True) 
 st.subheader("PCA Visualization")
 
 X = df_filtered.select_dtypes(include=['number'])
@@ -97,15 +97,13 @@ label_colors = {
     'Tor': '#e56b6f'
 }
 df_pca['Color'] = df_pca['Label'].map(label_colors)
-
-# Sidebar PCA Selection
 component_options = [f'PC{i+1}-PC{i+2}-PC{i+3}' for i in range(0, 27, 3) if i+2 < 27]
 selected_components = st.sidebar.selectbox("Select Principal Components:", component_options)
 selected_indices = [int(pc[2:]) - 1 for pc in selected_components.split('-')]
 selected_pc1, selected_pc2, selected_pc3 = selected_indices
 selected_variance = np.sum(pca.explained_variance_ratio_[selected_indices]) * 100
 
-# Sidebar Sliders
+
 x_min, x_max = st.sidebar.slider(f"PC{selected_pc1+1} Range", 
                                  float(df_pca.iloc[:, selected_pc1].min()), 
                                  float(df_pca.iloc[:, selected_pc1].max()), 
@@ -118,7 +116,6 @@ y_min, y_max = st.sidebar.slider(f"PC{selected_pc2+1} Range",
                                  (float(df_pca.iloc[:, selected_pc2].min()), 
                                   float(df_pca.iloc[:, selected_pc2].max())))
 
-# 3D PCA Plot
 scatter3d = go.Figure()
 for label, color in label_colors.items():
     subset = df_pca[df_pca['Label'] == label]
@@ -136,8 +133,6 @@ scatter3d.update_layout(
     height=400,
     width=1400
 )
-
-# 2D PCA Plot
 scatter2d = go.Figure()
 for label, color in label_colors.items():
     subset = df_pca[df_pca['Label'] == label]
@@ -157,6 +152,5 @@ scatter2d.update_layout(
     width=800
 )
 
-# Display PCA Plots
 st.plotly_chart(scatter3d, use_container_width=True)
 st.plotly_chart(scatter2d, use_container_width=True)
